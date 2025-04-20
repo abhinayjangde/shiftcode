@@ -2111,7 +2111,7 @@ export namespace Prisma {
     role?: $Enums.UserRole
     password: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type UserUncheckedCreateInput = {
@@ -2122,7 +2122,7 @@ export namespace Prisma {
     role?: $Enums.UserRole
     password: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type UserUpdateInput = {
@@ -2155,7 +2155,7 @@ export namespace Prisma {
     role?: $Enums.UserRole
     password: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {

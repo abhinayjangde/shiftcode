@@ -1,0 +1,44 @@
+import jwt from "jsonwebtoken";
+import { db } from "../libs/db.js";
+
+export const authMiddleware = async (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Unauthorized - No token provided",
+      success: false,
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await db.user.findUnique({
+      where: {
+        id: decoded.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        avatar: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Unauthorized - User not found",
+        success: false,
+      });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      message: "Unauthorized",
+      success: false,
+    });
+  }
+};

@@ -13,6 +13,7 @@ enum UserRole {
   USER
   ADMIN
 }
+
 model User{
   id String @id @default(cuid())
   name String?
@@ -21,5 +22,6 @@ model User{
   role UserRole @default(USER)
   password String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
+
