@@ -10,7 +10,7 @@ export const register = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Please fill all the fields",
-        sucess: false,
+        success: false,
       });
     }
 
@@ -23,7 +23,7 @@ export const register = async (req, res) => {
     if (exitingUser) {
       return res.status(400).json({
         message: "User already exists",
-        sucess: false,
+        success: false,
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -50,7 +50,7 @@ export const register = async (req, res) => {
 
     return res.status(200).json({
       message: "User created successfully",
-      sucess: true,
+      success: true,
       user: {
         id: user.id,
         name: user.name,
@@ -63,7 +63,7 @@ export const register = async (req, res) => {
     console.error("Error creating user:", error);
     return res.status(500).json({
       message: "Error creating user",
-      sucess: false,
+      success: false,
     });
   }
 };
@@ -71,6 +71,13 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
+  if(!email || !password){
+    return res.status(400).json({
+      message:"All fileds are required",
+      success: false
+    })
+  }
+  
   try {
     const user = await db.user.findUnique({
       where: {
@@ -81,7 +88,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         message: "Invalid credentials",
-        sucess: false,
+        success: false,
       });
     }
     const isMatch = await bcrypt.compare(password, user.password);
@@ -89,22 +96,24 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({
         message: "Invalid credentials",
-        sucess: false,
+        success: false,
       });
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
+
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "strict",
       secure: process.env.NODE_ENV !== "development",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
+
     return res.status(200).json({
       message: "User logged in successfully",
-      sucess: true,
+      success: true,
       user: {
         id: user.id,
         name: user.name,
@@ -117,7 +126,7 @@ export const login = async (req, res) => {
     console.error("Error logging in user:", error);
     return res.status(500).json({
       message: "Error logging in user",
-      sucess: false,
+      success: false,
     });
   }
 };
@@ -127,13 +136,13 @@ export const logout = async (req, res) => {
     res.clearCookie("token");
     return res.status(200).json({
       message: "User logged out successfully",
-      sucess: true,
+      success: true,
     });
   } catch (error) {
     console.error("Error logging out user:", error);
     return res.status(500).json({
       message: "Error logging out user",
-      sucess: false,
+      success: false,
     });
   }
 };
@@ -144,7 +153,7 @@ export const check = async (req, res) => {
     const user = req.user;
     return res.status(200).json({
       message: "User authenticated successfully",
-      sucess: false,
+      success: false,
       user
     });
   } catch (error) {}
