@@ -153,7 +153,7 @@ export const check = async (req, res) => {
     const user = req.user;
     return res.status(200).json({
       message: "User authenticated successfully",
-      success: false,
+      success: true,
       user
     });
   } catch (error) {}

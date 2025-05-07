@@ -51,15 +51,16 @@ export const isAdmin = async (req, res, next) => {
         id: userId,
       },
       select: {
-        role: true,
+        role: true
       },
     });
 
     if (!user || user.role !== "ADMIN") {
       return res.status(403).json({
         success: false,
-        message: "Access denied - Admin only",
+        message: "Access denied - Admin only"
       });
+
     }
 
     next();
