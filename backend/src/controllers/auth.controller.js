@@ -156,5 +156,11 @@ export const check = async (req, res) => {
       success: true,
       user
     });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error while checking user.", error);
+    return res.status(500).json({
+      message: "Error while checking user.",
+      success: false,
+    });
+  }
 };

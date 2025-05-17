@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -20,40 +19,132 @@ enum Difficulty {
   HARD
 }
 
-model User{
-  id String @id @default(cuid())
-  name String?
-  email String @unique
-  avatar String?
-  role UserRole @default(USER)
-  password String
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  avatar    String?
+  role      UserRole @default(USER)
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  problems Problem[]
+
+  // Relationships
+  problems      Problem[] // Problems created by this user
+  submissions   Submission[] // Submissions made by this user
+  problemSolved ProblemSolved[] // Problems solved by this user
+  playlists     Playlist[] // Playlists created by this user
+
+  @@index([role])
 }
 
-model Problem{
-  id String @id @default(cuid())
-  title String
-  description String
-  difficulty Difficulty
-  tags String[]
-  examples Json
-  constraints Json
-  hints String?
-  editorial String?
-  testcases Json
-  codeSnippets Json
+model Problem {
+  id                 String     @id @default(cuid())
+  title              String
+  description        String
+  difficulty         Difficulty
+  tags               String[]
+  examples           Json
+  constraints        Json
+  hints              String?
+  editorial          String?
+  testcases          Json
+  codeSnippets       Json
   referenceSolutions Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // relationships
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  userId            String
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission        Submission[]
+  solvedBy          ProblemSolved[]
+  ProblemInPlaylist ProblemInPlaylist[]
 }
 
+model Submission {
+  id            String   @id @default(uuid())
+  userId        String // User who submitted the code
+  problemId     String // Problem for which the code was submitted
+  sourceCode    Json // Submitted code
+  language      String // Programming language used
+  stdin         String? // Input provided for execution
+  stdout        String? // Output of the execution
+  stderr        String? // Error messages (if any)
+  compileOutput String? // Compilation errors (if any)
+  status        String // Execution status (e.g., Accepted, Wrong Answer, etc.)
+  memory        String? // Memory usage
+  time          String? // Execution time
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
+  // Relationships
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem   Problem          @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  testCases TestCaseResult[]
 
+  @@index([status])
+}
+
+model TestCaseResult {
+  id            String  @id @default(uuid())
+  submissionId  String
+  testCase      Int
+  passed        Boolean
+  stdout        String?
+  expected      String
+  stderr        String?
+  compileOutput String?
+  status        String
+  memory        String?
+  time          String?
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  // relationship
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
+model ProblemSolved {
+  id        String   @id @default(uuid())
+  userId    String // User who solved the problem
+  problemId String // Problem that was solved
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId]) // Ensure a user cannot solve the same problem multiple times
+}
+
+model Playlist {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  userId      String // User who created the playlist
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  problems ProblemInPlaylist[] // Problems in this playlist
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId]) // Ensure unique playlist names per user
+}
+
+model ProblemInPlaylist {
+  id         String   @id @default(uuid())
+  playlistId String
+  problemId  String
+  createdAt  DateTime @default(now())
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, problemId]) // Ensure no duplicate problems in the same playlist
+}
