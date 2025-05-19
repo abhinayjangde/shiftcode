@@ -17,9 +17,10 @@ export const getAllSubmission = async (req, res) => {
     });
   } catch (error) {
     console.error("Fetch Submissions Error:", error);
-    res.status(500).json({ error: "Failed to fetch submissions" });
+    return res.status(500).json({ error: "Failed to fetch submissions" });
   }
 };
+
 export const getSubmissionForProblem = async (req, res) => {
      try {
         const userId = req.user.id;
@@ -31,16 +32,17 @@ export const getSubmissionForProblem = async (req, res) => {
             },
         })
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Submissions fetched successfully",
             submissions,
         });    
     } catch (error) {
         console.error("Fetch Submissions Error:", error);
-        res.status(500).json({ error: "Failed to fetch submissions" });
+        return res.status(500).json({ error: "Failed to fetch submissions" });
     }
 };
+
 export const getAllTheSubmissionsForTheProblem = async (req, res) => {
     try {
         const problemId = req.params.problemId;
@@ -50,13 +52,13 @@ export const getAllTheSubmissionsForTheProblem = async (req, res) => {
             },
         })
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Submissions fetched successfully",
             count: submissions,
         });    
     } catch (error) {
         console.error("Fetch Submissions Error:", error);
-        res.status(500).json({ error: "Failed to fetch submissions" });
+        return res.status(500).json({ error: "Failed to fetch submissions" });
     }
 };

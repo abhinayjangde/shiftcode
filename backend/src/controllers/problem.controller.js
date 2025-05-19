@@ -4,7 +4,7 @@ import {
   submitBatch,
   getJudge0LanguageId,
 } from "../libs/judge0.js";
-process.loadEnvFile();
+
 
 export const createProblem = async (req, res) => {
   const {
@@ -247,7 +247,6 @@ export const updateProblem = async (req, res) => {
 // delete problems
 export const deleteProblem = async (req, res) => {
   const { id } = req.params;
-
   try {
     const problem = await db.problem.findUnique({ where: { id } });
 
