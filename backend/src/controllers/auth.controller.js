@@ -164,3 +164,29 @@ export const check = async (req, res) => {
     });
   }
 };
+
+export const getAllUser = async (req,res)=>{
+  try {
+    const allUsers = await db.user.findMany();
+    
+    if(!allUsers){
+      return res.status(404).json({
+        success: false,
+        message: "No user found"
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "All users fetched successfully",
+      users: allUsers
+    })
+  } catch (error) {
+
+    console.log("Error while fetching all users from db", error)
+    return res.status(500).json({
+      success: false,
+      message: "Error while fetching all users from db"
+    })
+  }
+}
