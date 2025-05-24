@@ -26,7 +26,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-start">
+    <div className="flex flex-col">
       <Toaster />
       <Routes>
         <Route path="/" element={<Layout />}>
