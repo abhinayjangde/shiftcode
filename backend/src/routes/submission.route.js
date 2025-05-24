@@ -5,7 +5,7 @@ import { getAllSubmission, getAllTheSubmissionsForTheProblem, getSubmissionForPr
 const submissionRoutes = express.Router()
 
 submissionRoutes.get("/get-all-submissions", authMiddleware, getAllSubmission)
-submissionRoutes.get("/get-submission/:problemId", authMiddleware, getSubmissionForProblem)
+submissionRoutes.get("/get-submissions/:problemId", authMiddleware, getSubmissionForProblem)
 submissionRoutes.get("/get-submissions-count/:problemId", authMiddleware, getAllTheSubmissionsForTheProblem)
 
 export default submissionRoutes

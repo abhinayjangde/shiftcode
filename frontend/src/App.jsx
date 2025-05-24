@@ -9,6 +9,10 @@ import { Loader } from "lucide-react";
 import Layout from "./components/Layout";
 import AddProblem from "./pages/AddProblem";
 import AdminRoute from "./components/AdminRoute";
+import ProblemPage from "./pages/ProblemPage";
+import ProfileSubmission from "./components/ProfileSubmission";
+import Profile from "./pages/Profile";
+import Problems from "./pages/Problems";
 
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -45,10 +49,10 @@ export default function App() {
           element={!authUser ? <Signup /> : <Navigate to={"/"} />}
         />
 
-        {/* <Route
+        <Route
           path="/problem/:id"
           element={authUser ? <ProblemPage /> : <Navigate to="/login" />}
-        /> */}
+        />
         <Route element={<AdminRoute />}>
           <Route
             path="/add-problem"
@@ -56,10 +60,14 @@ export default function App() {
           />
         </Route>
 
-        {/* <Route
+        <Route
           path="/profile"
           element={authUser ? <Profile /> : <Navigate to="/login" />}
-        /> */}
+        />
+         <Route
+          path="/problems"
+          element={<Problems /> }
+        />
       </Routes>
     </div>
   );
