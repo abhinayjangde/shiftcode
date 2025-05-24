@@ -6,7 +6,9 @@ import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
-
+import Layout from "./components/Layout";
+import AddProblem from "./pages/AddProblem";
+import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -27,10 +29,13 @@ export default function App() {
     <div className="flex flex-col items-center justify-start">
       <Toaster />
       <Routes>
-        <Route
-          path="/"
-          element={authUser ? <Home /> : <Navigate to={"/login"} />}
-        />
+        <Route path="/" element={<Layout />}>
+          <Route
+            index
+            element={authUser ? <Home /> : <Navigate to={"/login"} />}
+          />
+        </Route>
+
         <Route
           path="/login"
           element={!authUser ? <Login /> : <Navigate to={"/"} />}
@@ -40,7 +45,21 @@ export default function App() {
           element={!authUser ? <Signup /> : <Navigate to={"/"} />}
         />
 
-        <Route path="/problems" element={<h1>problems</h1>} />
+        {/* <Route
+          path="/problem/:id"
+          element={authUser ? <ProblemPage /> : <Navigate to="/login" />}
+        /> */}
+        <Route element={<AdminRoute />}>
+          <Route
+            path="/add-problem"
+            element={authUser ? <AddProblem /> : <Navigate to="/login" />}
+          />
+        </Route>
+
+        {/* <Route
+          path="/profile"
+          element={authUser ? <Profile /> : <Navigate to="/login" />}
+        /> */}
       </Routes>
     </div>
   );
