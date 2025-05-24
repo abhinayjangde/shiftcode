@@ -234,7 +234,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\projects\\leetlab\\backend\\src\\generated\\prisma",
+      "value": "D:\\projects\\shiftcode\\backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -248,7 +248,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\projects\\leetlab\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\projects\\shiftcode\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

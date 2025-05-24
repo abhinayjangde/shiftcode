@@ -34,13 +34,23 @@ export const pollBatchResults = async (tokens)=>{
 }
 
 export const submitBatch = async (submissions)=>{
-    const {data} = await axios.post(`${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`,{
-        submissions
-    })
-
-    console.log("Submission Results: ", data)
-
-    return data // [{token} , {token} , {token}]
+    try {
+        const {data} = await axios.post(`${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`,{
+            submissions
+        })
+    
+        console.log("Submission Results: ", data)
+    
+        return data // [{token} , {token} , {token}]
+    } catch (error) {
+        console.error("Error submitting batch: ", error)
+        console.error("Judge0 API Error:", {
+            status: error.response?.status,
+            data: error.response?.data,
+            message: error.message
+        });
+        throw new Error(`Judge0 API error: ${error.message}. Check if Judge0 service is running properly.`);
+    }
 }
 
 export function getLanguageName(langaugeId){

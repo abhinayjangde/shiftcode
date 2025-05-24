@@ -8,7 +8,8 @@
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
     "push": "npx prisma db push",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "reset": "npx prisma migrate reset"
   },
   "keywords": [],
   "author": "Abhinay Jangde",

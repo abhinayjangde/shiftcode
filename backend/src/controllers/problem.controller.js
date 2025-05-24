@@ -26,15 +26,15 @@ export const createProblem = async (req, res) => {
       message: "You are not authorized to create a problem",
     });
   }
-
   try {
     for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
       const languageId = getJudge0LanguageId(language);
       if (!languageId) {
         return res
-          .status(400)
-          .json({ error: `Language ${language} is not supported` });
+        .status(400)
+        .json({ error: `Language ${language} is not supported` });
       }
+      console.log("__________________________Yah tk ok hai.")
 
       const submissions = testcases.map(({ input, output }) => ({
         source_code: solutionCode,
@@ -84,7 +84,7 @@ export const createProblem = async (req, res) => {
       problem: newProblem,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({
       error: "Error While Creating Problem",
     });
