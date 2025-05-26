@@ -2,6 +2,7 @@ import React from 'react';
 import { CheckCircle2, XCircle, Clock, MemoryStick as Memory } from 'lucide-react';
 
 const SubmissionResults = ({ submission }) => {
+  
   // Parse stringified arrays
   const memoryArr = JSON.parse(submission.memory || '[]');
   const timeArr = JSON.parse(submission.time || '[]');
@@ -29,7 +30,7 @@ const SubmissionResults = ({ submission }) => {
             <div className={`text-lg font-bold ${
               submission.status === 'Accepted' ? 'text-success' : 'text-error'
             }`}>
-              {submission.status}
+              {submission.status} BRO
             </div>
           </div>
         </div>

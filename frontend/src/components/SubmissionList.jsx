@@ -20,6 +20,7 @@ const SubmissionsList = ({ submissions, isLoading }) => {
 
   // Helper function to calculate average memory usage
   const calculateAverageMemory = (memoryData) => {
+    console.log("submission data:", submissions);
     const memoryArray = safeParse(memoryData).map((m) =>
       parseFloat(m.split(" ")[0])
     );

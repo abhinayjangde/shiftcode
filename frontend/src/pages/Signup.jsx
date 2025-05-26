@@ -32,7 +32,7 @@ export default function Signup() {
       console.error("SignUp failed:", error);
     }
   };
-  
+
   return (
     <div className="h-screen grid lg:grid-cols-2">
       {/* Left Side - Form */}
@@ -141,7 +141,7 @@ export default function Signup() {
             <button
               type="submit"
               className="btn btn-primary w-full"
-                disabled={isSigninUp}
+              disabled={isSigninUp}
             >
               {isSigninUp ? (
                 <>
