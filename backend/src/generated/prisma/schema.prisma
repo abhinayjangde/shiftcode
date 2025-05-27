@@ -29,6 +29,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  isVerified Boolean @default(false)
+
+  verificationToken String? // Token for email verification
+  resetToken        String? // Token for password reset
+  resetTokenExpiry  DateTime? // Expiry time for the password reset token
+
   // Relationships
   problems      Problem[] // Problems created by this user
   submissions   Submission[] // Submissions made by this user
